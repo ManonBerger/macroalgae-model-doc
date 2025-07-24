@@ -1,0 +1,18 @@
+site_name: Macroalgae Box Model
+theme:
+  name: readthedocs
+
+nav:
+  - Home: index.md
+  - Model: model.md
+  - Remineralisation : Remineralisation.md
+
+markdown_extensions:
+  - extra
+  - tables
+  - fenced_code
+  - mdx_math
+
+extra_javascript:
+  - js/mathjax-config.js
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML

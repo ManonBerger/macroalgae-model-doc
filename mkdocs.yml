@@ -4,8 +4,10 @@ theme:
 
 nav:
   - Home: index.md
-  - Model: model.md
-  - Remineralisation : Remineralisation.md
+  - Model:
+    - General Description: Model/model.md
+    - Production: Model/Production.md
+    - Remineralisation : Model/Remineralisation.md
 
 markdown_extensions:
   - extra

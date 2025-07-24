@@ -1,6 +1,6 @@
 # Remineralization of Macroalgal DOC 
 
-This is a description of p4zrem.F90.
+This is a description of **p4zrem.F90**.
 To incorporate the remineralization of dissolved organic carbon from macroalgal origin (`DOCMAC`) into the biogeochemical model, we extended the existing remineralization scheme—originally limited to phytoplankton-derived DOC. This document summarizes the added formulations and their stoichiometric interpretation.
 
 ---
@@ -60,7 +60,7 @@ $$
 Only consumed in oxic remineralization:
 
 $$
-\frac{d[O_2]}{dt} = - R_{oxic} \cdot r_{O_2}
+\frac{dO_2}{dt} = - R_{oxic} \cdot r_{O_2}
 $$
 
 ### Nitrate and Ammonium
@@ -68,11 +68,11 @@ $$
 Stoichiometry accounts for distinct C:N ratios of phytoplankton and macroalgae:
 
 $$
-\frac{d[NO_3]}{dt} = - R_{denit} \cdot r_{denit} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
+\frac{dNO_3^-}{dt} = - R_{denit} \cdot r_{denit} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
 $$
 
 $$
-\frac{d[NH_4]}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
+\frac{dNH_4^+}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
 $$
 
 ### Total Alkalinity (TAl)
@@ -88,7 +88,7 @@ $$
 Scaled similarly using C:P ratios:
 
 $$
-\frac{d[PO_4]}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:P}^{PHY}}{Q_{C:P}^{MAC}} \right]
+\frac{dPO_4^{3-}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:P}^{PHY}}{Q_{C:P}^{MAC}} \right]
 $$
 
 ### Iron (from macroalgae only)
@@ -96,7 +96,7 @@ $$
 Iron is released as dissolved iron only from macroalgal DOC remineralization:
 
 $$
-\frac{d[Fe]}{dt} = + R_{tot} \cdot f_{DOCmac} \cdot \left( \frac{1}{Q_{C:Fe}^{MAC}} \right)
+\frac{dDFe}{dt} = + R_{tot} \cdot f_{DOCmac} \cdot \left( \frac{1}{Q_{C:Fe}^{MAC}} \right)
 $$
 
 ---
@@ -114,19 +114,11 @@ $$
 | `tr(:,:,:,jpnh4,...)`  | \( \text{NH}_4^+ \)                      | Ammonium                                                              |
 | `tr(:,:,:,jptal,...)`  | \( \text{TA} \)                          | Total alkalinity                                                      |
 | `tr(:,:,:,jppo4,...)`  | \( \text{PO}_4^{3-} \)                   | Phosphate                                                             |
-| `tr(:,:,:,jpfer,...)`  | \( \text{Fe} \)                          | Dissolved iron                                                        |
+| `tr(:,:,:,jpfer,...)`  | \( \text{DFe} \)                          | Dissolved iron                                                        |
 | `qCN_phy`              | \( Q_{\text{C:N}}^{\text{phy}} \)       | Phytoplankton carbon-to-nitrogen ratio                               |
 | `qCN_mac`              | \( Q_{\text{C:N}}^{\text{mac}} \)       | Macroalgae carbon-to-nitrogen ratio                                  |
 | `qCP_phy`              | \( Q_{\text{C:P}}^{\text{phy}} \)       | Phytoplankton carbon-to-phosphorus ratio                             |
 | `qCP_mac`              | \( Q_{\text{C:P}}^{\text{mac}} \)       | Macroalgae carbon-to-phosphorus ratio                                |
 | `qCFe_mac`             | \( Q_{\text{C:Fe}}^{\text{mac}} \)      | Macroalgae carbon-to-iron ratio                                      |
-| `denitr`               | \( R_{\text{denitr}} \)                 | Remineralization via denitrification                                 |
-| `zolimic`              | \( R_{\text{oxic}} \)                   | Oxic remineralization flux                                           |
-| `zammonic`             | \( R_{\text{denit+anoxic}} \)           | Suboxic + anoxic remineralization flux                               |
-| `zrem3D`               | \( R_{\text{remin}} \)                  | Total remineralization rate                                          |
-| `ztemp`                | —                                       | Temporary total remin flux (oxic + denitr + anoxic)                  |
-| `rdenit`               | \( \text{Redox}_{\text{NO}_3} \)        | Redox stoichiometric ratio for denitrification                       |
-| `rno3`                 | \( \text{Redox}_{\text{NO}_3}^{\text{TA}} \) | Stoichiometric coefficient for nitrate effect on alkalinity     |
-| `o2ut`                 | \( r_{\text{O}_2} \)                    | Stoichiometric coefficient for oxygen use during remineralization    |
-| `nitrfac`              | —                                       | Nitrate-based partitioning factor                                    |
-| `nitrfac2`             | —                                       | Additional nitrate-based partitioning factor                         |
+
+

@@ -1,21 +1,6 @@
-# Welcome to MkDocs
+# Welcome to Macroalgae PISCES Module
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 
-## Commands
+This is the documentation for the Macroalgae module integrated to PISCES ocean biogeochemical model ([PISCES model](https://www.pisces-community.org/index.php/model-description/)). 
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
-# Welcome
-
-This is the documentation for the macroalgae box model.  
 See the [model description](model.md) for more details.

@@ -1,5 +1,6 @@
 # Remineralization of Macroalgal DOC 
 
+This is a description of p4zrem.F90.
 To incorporate the remineralization of dissolved organic carbon from macroalgal origin (`DOCMAC`) into the biogeochemical model, we extended the existing remineralization scheme—originally limited to phytoplankton-derived DOC. This document summarizes the added formulations and their stoichiometric interpretation.
 
 ---
@@ -100,7 +101,7 @@ $$
 
 ---
 
-These equation can be found in p4zrem.F90.
+## Variables
 
 | Fortran Variable       | Documentation / Equation Name           | Description                                                           |
 |------------------------|-----------------------------------------|-----------------------------------------------------------------------|

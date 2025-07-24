@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Production - Macroalgae PISCES Module</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Production";
+        var mkdocs_page_input_path = "Model/Production.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Macroalgae PISCES Module
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Model</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../model/">General Description</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Production</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#model-structure">Model Structure</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#growth-limitations">Growth Limitations</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-temperature-dependence">1. Temperature Dependence</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-light-limitation">2. Light Limitation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-nutrient-limitation-michaelis-menten">3. Nutrient Limitation (Michaelis-Menten)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-iron-limitation">4. Iron Limitation</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#gross-production">Gross Production</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#respiration">Respiration</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#net-primary-production">Net Primary Production</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#nutrient-update">Nutrient Update</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#variable-mapping">Variable Mapping</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#input-parameters-from-nampismacprod-namelist">Input Parameters (from nampismacprod namelist)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#references">References</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#output-variables">Output Variables</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Remineralisation/">Remineralisation</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Macroalgae PISCES Module</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Model</li>
+      <li class="breadcrumb-item active">Production</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="macroalgae-primary-production">Macroalgae Primary Production</h1>
+<p>This module simulates the <strong>net primary production of macroalgae</strong>, distinguishing between two functional types:</p>
+<ul>
+<li><strong>Temperate Brown Macroalgae</strong></li>
+<li><strong>Tropical Red Macroalgae</strong></li>
+</ul>
+<p>Light, temperature, nutrient, and iron limitations are considered to compute the <strong>net primary production (NPP)</strong>.</p>
+<h2 id="model-structure">Model Structure</h2>
+<p>For each 3D ocean grid cell where macroalgae can grow (<code>macrogebco &gt; 0</code>), the following processes are computed:</p>
+<hr />
+<h2 id="growth-limitations">Growth Limitations</h2>
+<h3 id="1-temperature-dependence">1. Temperature Dependence</h3>
+<p>The temperature growth limitation is given by a Gaussian function, following Wu et al (2023):</p>
+<p>
+<script type="math/tex; mode=display">
+f_T = \exp\left(-2.3 \left(\frac{T - T_{\text{opt}}}{T_x - T_{\text{opt}}}\right)^2 \right)
+</script>
+</p>
+<p>Where:</p>
+<ul>
+<li>
+<script type="math/tex"> T </script>: in situ temperature</li>
+<li>
+<script type="math/tex"> T_{\text{opt}} </script>: optimal temperature</li>
+<li>
+<script type="math/tex"> T_x </script>: limiting temperature (either <code>xtmax</code> or <code>xtmin</code>)</li>
+</ul>
+<h3 id="2-light-limitation">2. Light Limitation</h3>
+<p>Light limitation uses a peaked function:</p>
+<p>
+<script type="math/tex; mode=display">
+f_{\text{PAR}} = \left( \frac{E}{E_{\text{opt}}} \right) \cdot \exp\left(1 - \frac{E}{E_{\text{opt}}} \right)
+</script>
+</p>
+<p>Where:
+- <script type="math/tex"> E </script>: total PAR at depth
+- <script type="math/tex"> E_{\text{opt}} </script>: optimal light for macroalgae</p>
+<h3 id="3-nutrient-limitation-michaelis-menten">3. Nutrient Limitation (Michaelis-Menten)</h3>
+<p>Nitrogen (NO₃) and phosphorus (PO₄) limitations are computed:</p>
+<p>
+<script type="math/tex; mode=display">
+L_{NO_3} = \frac{[NO_3]}{K_{NO_3} + [NO_3]} \quad ; \quad L_{PO_4} = \frac{[PO_4]}{K_{PO_4} + [PO_4]}
+</script>
+</p>
+<p>Combined as:</p>
+<p>
+<script type="math/tex; mode=display">
+f_{\text{nutrient}} = \min(L_{NO_3}, L_{PO_4})
+</script>
+</p>
+<h3 id="4-iron-limitation">4. Iron Limitation</h3>
+<p>Based on Paine et al. (2023):</p>
+<p>
+<script type="math/tex; mode=display">
+f_{Fe} = f_{Fe}^{\text{max}} \cdot \frac{[Fe]}{K_{Fe} + [Fe]}
+</script>
+</p>
+<p>Then:</p>
+<p>
+<script type="math/tex; mode=display">
+f_{\text{nut}} = \min(f_{\text{nutrient}}, f_{Fe})
+</script>
+</p>
+<hr />
+<h2 id="gross-production">Gross Production</h2>
+<p>Gross primary production:</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{dB}{dt} = \mu_{\text{max}} \cdot f_T \cdot f_{\text{nut}} \cdot f_{\text{PAR}} \cdot \Delta t
+</script>
+</p>
+<p>Then corrected for <strong>sea ice cover</strong>:</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{dB}{dt} = \frac{dB}{dt} \cdot (1 - \text{frac}_{\text{ice}})
+</script>
+</p>
+<hr />
+<h2 id="respiration">Respiration</h2>
+<p>Respiration is temperature-dependent:</p>
+<p>
+<script type="math/tex; mode=display">
+R = \mu_{\text{resp}} \cdot \text{coef}_{\text{resp}}^{T - 20} \cdot \frac{dB}{dt}
+</script>
+</p>
+<hr />
+<h2 id="net-primary-production">Net Primary Production</h2>
+<p>Finally, NPP is computed as:</p>
+<p>
+<script type="math/tex; mode=display">
+\text{NPP} = (\frac{dB}{dt} - R) \cdot \text{biomass tracer mask}
+</script>
+</p>
+<hr />
+<h2 id="nutrient-update">Nutrient Update</h2>
+<p>The uptake of nutrients (PO₄, NO₃, DIC, Fe) is proportional to the NPP and stoichiometric ratios.</p>
+<hr />
+<h2 id="variable-mapping">Variable Mapping</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Variable in Fortran</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Equation Symbol</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ts</code></td>
+<td>Temperature</td>
+<td>
+<script type="math/tex"> T </script>
+</td>
+</tr>
+<tr>
+<td><code>etot</code></td>
+<td>Light at depth</td>
+<td>
+<script type="math/tex"> E </script>
+</td>
+</tr>
+<tr>
+<td><code>tr(...,jpno3,...)</code></td>
+<td>NO₃ concentration</td>
+<td>
+<script type="math/tex"> [NO_3] </script>
+</td>
+</tr>
+<tr>
+<td><code>tr(...,jppo4,...)</code></td>
+<td>PO₄ concentration</td>
+<td>
+<script type="math/tex"> [PO_4] </script>
+</td>
+</tr>
+<tr>
+<td><code>tr(...,jpfer,...)</code></td>
+<td>Iron concentration</td>
+<td>
+<script type="math/tex"> [Fe] </script>
+</td>
+</tr>
+<tr>
+<td><code>fr_i</code></td>
+<td>Sea ice fraction</td>
+<td>
+<script type="math/tex"> \text{frac}_{\text{ice}} </script>
+</td>
+</tr>
+<tr>
+<td><code>trbtropred</code>, <code>trbtempbrown</code></td>
+<td>Biomass array</td>
+<td>
+<script type="math/tex"> B </script>
+</td>
+</tr>
+<tr>
+<td><code>macrogebco(:,:,:)</code></td>
+<td>Bathymetry mask (% cell area)</td>
+<td>
+<script type="math/tex"> \text{mask}_{3D}(:,:,:) </script>
+</td>
+</tr>
+<tr>
+<td><code>xstep</code></td>
+<td>Time step</td>
+<td>
+<script type="math/tex"> \Delta t </script>
+</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="input-parameters-from-nampismacprod-namelist">Input Parameters (from <code>nampismacprod</code> namelist)</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Variable in Fortran</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Equation Symbol</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>toptmacb</code>, <code>toptmacr</code></td>
+<td>Optimal temperature</td>
+<td>
+<script type="math/tex"> T_{\text{opt}} </script>
+</td>
+</tr>
+<tr>
+<td><code>xtmaxmacb</code>, <code>xtminmacb</code></td>
+<td>Temperature limits (brown)</td>
+<td>
+<script type="math/tex"> T_x </script>
+</td>
+</tr>
+<tr>
+<td><code>xparoptmacb</code>, <code>xparoptmacr</code></td>
+<td>Optimal light</td>
+<td>
+<script type="math/tex"> E_{\text{opt}} </script>
+</td>
+</tr>
+<tr>
+<td><code>concmno3b</code>, <code>concmno3r</code></td>
+<td>NO₃ half-sat. constants</td>
+<td>
+<script type="math/tex"> K_{NO_3} </script>
+</td>
+</tr>
+<tr>
+<td><code>concmpo4b</code>, <code>concmpo4r</code></td>
+<td>PO₄ half-sat. constants</td>
+<td>
+<script type="math/tex"> K_{PO_4} </script>
+</td>
+</tr>
+<tr>
+<td><code>concmfe</code></td>
+<td>Fe half-sat. constant</td>
+<td>
+<script type="math/tex"> K_{Fe} </script>
+</td>
+</tr>
+<tr>
+<td><code>xfegmacmax</code></td>
+<td>Fe limitation max factor</td>
+<td>
+<script type="math/tex"> f_{Fe}^{\text{max}} </script>
+</td>
+</tr>
+<tr>
+<td><code>xgmacmaxb</code>, <code>xgmacmaxr</code></td>
+<td>Max growth rate</td>
+<td>
+<script type="math/tex"> \mu_{\text{max}} </script>
+</td>
+</tr>
+<tr>
+<td><code>xrpmacmax</code></td>
+<td>Max respiration rate</td>
+<td>
+<script type="math/tex"> \mu_{\text{resp}} </script>
+</td>
+</tr>
+<tr>
+<td><code>xrespmaccoef</code></td>
+<td>Respiration temp. coefficient</td>
+<td>
+<script type="math/tex"> \text{coef}_{\text{resp}} </script>
+</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="references">References</h2>
+<ul>
+<li>Wu et al., 2023. </li>
+<li>Paine et al., 2023. </li>
+</ul>
+<hr />
+<h2 id="output-variables">Output Variables</h2>
+<p>These variables are output using <code>iom_put</code>:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Output</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MACPRODB</code></td>
+<td>Gross production (Brown)</td>
+</tr>
+<tr>
+<td><code>MACPRODR</code></td>
+<td>Gross production (Red)</td>
+</tr>
+<tr>
+<td><code>MACNPPB</code></td>
+<td>Net primary production (Brown)</td>
+</tr>
+<tr>
+<td><code>MACNPPR</code></td>
+<td>Net primary production (Red)</td>
+</tr>
+<tr>
+<td><code>MACNPP</code></td>
+<td>Total net primary production</td>
+</tr>
+<tr>
+<td><code>MACRESP</code></td>
+<td>Respiration (all macroalgae)</td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../model/" class="btn btn-neutral float-left" title="General Description"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Remineralisation/" class="btn btn-neutral float-right" title="Remineralisation">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../model/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Remineralisation/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../js/mathjax-config.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

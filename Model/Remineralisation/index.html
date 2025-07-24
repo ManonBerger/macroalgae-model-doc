@@ -4,21 +4,21 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="shortcut icon" href="../img/favicon.ico" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
     <title>Remineralisation - Macroalgae PISCES Module</title>
-    <link rel="stylesheet" href="../css/theme.css" />
-    <link rel="stylesheet" href="../css/theme_extra.css" />
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
     
       <script>
         // Current page data
         var mkdocs_page_name = "Remineralisation";
-        var mkdocs_page_input_path = "Remineralisation.md";
+        var mkdocs_page_input_path = "Model/Remineralisation.md";
         var mkdocs_page_url = null;
       </script>
     
     <!--[if lt IE 9]>
-      <script src="../js/html5shiv.min.js"></script>
+      <script src="../../js/html5shiv.min.js"></script>
     <![endif]-->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
       <script>hljs.highlightAll();</script> 
@@ -30,9 +30,9 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
-          <a href=".." class="icon icon-home"> Macroalgae PISCES Module
+          <a href="../.." class="icon icon-home"> Macroalgae PISCES Module
         </a><div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
       <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
   </form>
 </div>
@@ -40,15 +40,16 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../model/">Model</a>
-                </li>
-              </ul>
+              <p class="caption"><span class="caption-text">Model</span></p>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="#">Remineralisation</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../model/">General Description</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Production/">Production</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Remineralisation</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#1-fraction-of-macroalgal-doc">1. Fraction of Macroalgal DOC</a>
     </li>
@@ -77,7 +78,7 @@
     <li class="toctree-l2"><a class="reference internal" href="#variables">Variables</a>
     </li>
     </ul>
-                </li>
+                  </li>
               </ul>
       </div>
     </div>
@@ -86,13 +87,14 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
       <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="..">Macroalgae PISCES Module</a>
+          <a href="../..">Macroalgae PISCES Module</a>
         
       </nav>
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Model</li>
       <li class="breadcrumb-item active">Remineralisation</li>
     <li class="wy-breadcrumbs-aside">
     </li>
@@ -103,7 +105,7 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="remineralization-of-macroalgal-doc">Remineralization of Macroalgal DOC</h1>
-<p>This is a description of p4zrem.F90.
+<p>This is a description of <strong>p4zrem.F90</strong>.
 To incorporate the remineralization of dissolved organic carbon from macroalgal origin (<code>DOCMAC</code>) into the biogeochemical model, we extended the existing remineralization scheme—originally limited to phytoplankton-derived DOC. This document summarizes the added formulations and their stoichiometric interpretation.</p>
 <hr />
 <h2 id="1-fraction-of-macroalgal-doc">1. Fraction of Macroalgal DOC</h2>
@@ -149,19 +151,19 @@ R_{tot} =R_{oxic} + R_{denit} + R _{ano}
 <p>Only consumed in oxic remineralization:</p>
 <p>
 <script type="math/tex; mode=display">
-\frac{d[O_2]}{dt} = - R_{oxic} \cdot r_{O_2}
+\frac{dO_2}{dt} = - R_{oxic} \cdot r_{O_2}
 </script>
 </p>
 <h3 id="nitrate-and-ammonium">Nitrate and Ammonium</h3>
 <p>Stoichiometry accounts for distinct C:N ratios of phytoplankton and macroalgae:</p>
 <p>
 <script type="math/tex; mode=display">
-\frac{d[NO_3]}{dt} = - R_{denit} \cdot r_{denit} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
+\frac{dNO_3^-}{dt} = - R_{denit} \cdot r_{denit} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
 </script>
 </p>
 <p>
 <script type="math/tex; mode=display">
-\frac{d[NH_4]}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
+\frac{dNH_4^+}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
 </script>
 </p>
 <h3 id="total-alkalinity-tal">Total Alkalinity (TAl)</h3>
@@ -175,14 +177,14 @@ R_{tot} =R_{oxic} + R_{denit} + R _{ano}
 <p>Scaled similarly using C:P ratios:</p>
 <p>
 <script type="math/tex; mode=display">
-\frac{d[PO_4]}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:P}^{PHY}}{Q_{C:P}^{MAC}} \right]
+\frac{dPO_4^{3-}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:P}^{PHY}}{Q_{C:P}^{MAC}} \right]
 </script>
 </p>
 <h3 id="iron-from-macroalgae-only">Iron (from macroalgae only)</h3>
 <p>Iron is released as dissolved iron only from macroalgal DOC remineralization:</p>
 <p>
 <script type="math/tex; mode=display">
-\frac{d[Fe]}{dt} = + R_{tot} \cdot f_{DOCmac} \cdot \left( \frac{1}{Q_{C:Fe}^{MAC}} \right)
+\frac{dDFe}{dt} = + R_{tot} \cdot f_{DOCmac} \cdot \left( \frac{1}{Q_{C:Fe}^{MAC}} \right)
 </script>
 </p>
 <hr />
@@ -262,7 +264,7 @@ R_{tot} =R_{oxic} + R_{denit} + R _{ano}
 <tr>
 <td><code>tr(:,:,:,jpfer,...)</code></td>
 <td>
-<script type="math/tex"> \text{Fe} </script>
+<script type="math/tex"> \text{DFe} </script>
 </td>
 <td>Dissolved iron</td>
 </tr>
@@ -301,77 +303,13 @@ R_{tot} =R_{oxic} + R_{denit} + R _{ano}
 </td>
 <td>Macroalgae carbon-to-iron ratio</td>
 </tr>
-<tr>
-<td><code>denitr</code></td>
-<td>
-<script type="math/tex"> R_{\text{denitr}} </script>
-</td>
-<td>Remineralization via denitrification</td>
-</tr>
-<tr>
-<td><code>zolimic</code></td>
-<td>
-<script type="math/tex"> R_{\text{oxic}} </script>
-</td>
-<td>Oxic remineralization flux</td>
-</tr>
-<tr>
-<td><code>zammonic</code></td>
-<td>
-<script type="math/tex"> R_{\text{denit+anoxic}} </script>
-</td>
-<td>Suboxic + anoxic remineralization flux</td>
-</tr>
-<tr>
-<td><code>zrem3D</code></td>
-<td>
-<script type="math/tex"> R_{\text{remin}} </script>
-</td>
-<td>Total remineralization rate</td>
-</tr>
-<tr>
-<td><code>ztemp</code></td>
-<td>—</td>
-<td>Temporary total remin flux (oxic + denitr + anoxic)</td>
-</tr>
-<tr>
-<td><code>rdenit</code></td>
-<td>
-<script type="math/tex"> \text{Redox}_{\text{NO}_3} </script>
-</td>
-<td>Redox stoichiometric ratio for denitrification</td>
-</tr>
-<tr>
-<td><code>rno3</code></td>
-<td>
-<script type="math/tex"> \text{Redox}_{\text{NO}_3}^{\text{TA}} </script>
-</td>
-<td>Stoichiometric coefficient for nitrate effect on alkalinity</td>
-</tr>
-<tr>
-<td><code>o2ut</code></td>
-<td>
-<script type="math/tex"> r_{\text{O}_2} </script>
-</td>
-<td>Stoichiometric coefficient for oxygen use during remineralization</td>
-</tr>
-<tr>
-<td><code>nitrfac</code></td>
-<td>—</td>
-<td>Nitrate-based partitioning factor</td>
-</tr>
-<tr>
-<td><code>nitrfac2</code></td>
-<td>—</td>
-<td>Additional nitrate-based partitioning factor</td>
-</tr>
 </tbody>
 </table>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../model/" class="btn btn-neutral float-left" title="Model"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Production/" class="btn btn-neutral float-left" title="Production"><span class="icon icon-circle-arrow-left"></span> Previous</a>
     </div>
 
   <hr/>
@@ -394,18 +332,18 @@ R_{tot} =R_{oxic} + R_{denit} + R _{ano}
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../model/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../Production/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
   </span>
 </div>
-    <script src="../js/jquery-3.6.0.min.js"></script>
-    <script>var base_url = "..";</script>
-    <script src="../js/theme_extra.js"></script>
-    <script src="../js/theme.js"></script>
-      <script src="../js/mathjax-config.js"></script>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../js/mathjax-config.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML"></script>
-      <script src="../search/main.js"></script>
+      <script src="../../search/main.js"></script>
     <script>
         jQuery(function () {
             SphinxRtdTheme.Navigation.enable(true);

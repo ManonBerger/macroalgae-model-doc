@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Remineralisation - Macroalgae Box Model</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Remineralisation";
+        var mkdocs_page_input_path = "Remineralisation.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Macroalgae Box Model
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../model/">Model</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Remineralisation</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-fraction-of-macroalgal-doc">1. Fraction of Macroalgal DOC</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-remineralization-fluxes">2. Remineralization Fluxes</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-total-remineralization-flux">3. Total Remineralization Flux</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-doc-and-doc_mac-evolution">4. DOC and DOC_mac Evolution</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-remineralization-products">5. Remineralization Products</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#dissolved-inorganic-carbon-dic">Dissolved Inorganic Carbon (DIC)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#oxygen">Oxygen</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#nitrate-and-ammonium">Nitrate and Ammonium</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#total-alkalinity-tal">Total Alkalinity (TAl)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#phosphate">Phosphate</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#iron-from-macroalgae-only">Iron (from macroalgae only)</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Macroalgae Box Model</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Remineralisation</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="remineralization-of-macroalgal-doc">Remineralization of Macroalgal DOC</h1>
+<p>To incorporate the remineralization of dissolved organic carbon from macroalgal origin (<code>DOCMAC</code>) into the biogeochemical model, we extended the existing remineralization scheme—originally limited to phytoplankton-derived DOC. This document summarizes the added formulations and their stoichiometric interpretation.</p>
+<hr />
+<h2 id="1-fraction-of-macroalgal-doc">1. Fraction of Macroalgal DOC</h2>
+<p>We first calculate the fraction of total DOC originating from macroalgae:</p>
+<p>
+<script type="math/tex; mode=display"> f_{DOCmac} = \frac{DOC_{mac}}{DOC + DOC_{mac} + \varepsilon} </script>
+</p>
+<p>Here,  <script type="math/tex"> \varepsilon </script>  is a small number to prevent division by zero.</p>
+<hr />
+<h2 id="2-remineralization-fluxes">2. Remineralization Fluxes</h2>
+<p>Oxic, suboxic and anoxic remineralization are computing as in PISCES std with <code>DOC</code> + <code>DOCMAC</code>.</p>
+<hr />
+<h2 id="3-total-remineralization-flux">3. Total Remineralization Flux</h2>
+<p>The total remineralization flux is the sum of all pathways:</p>
+<p>
+<script type="math/tex; mode=display">
+R_{tot} =R_{oxic} + R_{denit} + R _{ano}
+</script>
+</p>
+<hr />
+<h2 id="4-doc-and-doc_mac-evolution">4. DOC and DOC_mac Evolution</h2>
+<p>Remineralization is split between the phytoplankton-derived DOC and macroalgal DOC pools using <script type="math/tex"> f_{DOCmac} </script>  :</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{dDOC}{dt} = -R_{tot} \cdot (1 - f_{DOCmac})
+</script>
+</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{dDOC_{mac}}{dt} = -R_{tot} \cdot f_{DOCmac}
+</script>
+</p>
+<hr />
+<h2 id="5-remineralization-products">5. Remineralization Products</h2>
+<h3 id="dissolved-inorganic-carbon-dic">Dissolved Inorganic Carbon (DIC)</h3>
+<p>All remineralized DOC contributes to DIC:</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{dDIC}{dt} = + R_{tot}
+</script>
+</p>
+<h3 id="oxygen">Oxygen</h3>
+<p>Only consumed in oxic remineralization:</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{d[O_2]}{dt} = - R_{oxic} \cdot r_{O_2}
+</script>
+</p>
+<h3 id="nitrate-and-ammonium">Nitrate and Ammonium</h3>
+<p>Stoichiometry accounts for distinct C:N ratios of phytoplankton and macroalgae:</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{d[NO_3]}{dt} = - R_{denit} \cdot r_{denit} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
+</script>
+</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{d[NH_4]}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
+</script>
+</p>
+<h3 id="total-alkalinity-tal">Total Alkalinity (TAl)</h3>
+<p>Alkalinity changes reflect nitrate consumption and denitrification:</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{dTA}{dt} = + r_{NO_3} \cdot \left( R_{tot} + r_{denit} \cdot R_{denit} \right) \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}} \right]
+</script>
+</p>
+<h3 id="phosphate">Phosphate</h3>
+<p>Scaled similarly using C:P ratios:</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{d[PO_4]}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:P}^{PHY}}{Q_{C:P}^{MAC}} \right]
+</script>
+</p>
+<h3 id="iron-from-macroalgae-only">Iron (from macroalgae only)</h3>
+<p>Iron is released as dissolved iron only from macroalgal DOC remineralization:</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{d[Fe]}{dt} = + R_{tot} \cdot f_{DOCmac} \cdot \left( \frac{1}{Q_{C:Fe}^{MAC}} \right)
+</script>
+</p>
+<hr />
+<p>These equation can be found in p4zrem.F90.</p>
+<table>
+<thead>
+<tr>
+<th>Fortran Variable</th>
+<th>Documentation / Equation Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>xdocmacdoc</code></td>
+<td>
+<script type="math/tex"> f_{\text{mac}} = \frac{\text{DOC}_{\text{MAC}}}{\text{DOC} + \text{DOC}_{\text{MAC}}} </script>
+</td>
+<td>Fraction of total DOC from macroalgae</td>
+</tr>
+<tr>
+<td><code>tr(:,:,:,jpdoc,...)</code></td>
+<td>
+<script type="math/tex"> \text{DOC} </script>
+</td>
+<td>Classical dissolved organic carbon</td>
+</tr>
+<tr>
+<td><code>tr(:,:,:,jpdocmac,...)</code></td>
+<td>
+<script type="math/tex"> \text{DOC}_{\text{MAC}} </script>
+</td>
+<td>DOC from macroalgae</td>
+</tr>
+<tr>
+<td><code>tr(:,:,:,jpoxy,...)</code></td>
+<td>
+<script type="math/tex"> \text{O}_2 </script>
+</td>
+<td>Dissolved oxygen</td>
+</tr>
+<tr>
+<td><code>tr(:,:,:,jpno3,...)</code></td>
+<td>
+<script type="math/tex"> \text{NO}_3^- </script>
+</td>
+<td>Nitrate</td>
+</tr>
+<tr>
+<td><code>tr(:,:,:,jpdic,...)</code></td>
+<td>
+<script type="math/tex"> \text{DIC} </script>
+</td>
+<td>Dissolved inorganic carbon</td>
+</tr>
+<tr>
+<td><code>tr(:,:,:,jpnh4,...)</code></td>
+<td>
+<script type="math/tex"> \text{NH}_4^+ </script>
+</td>
+<td>Ammonium</td>
+</tr>
+<tr>
+<td><code>tr(:,:,:,jptal,...)</code></td>
+<td>
+<script type="math/tex"> \text{TA} </script>
+</td>
+<td>Total alkalinity</td>
+</tr>
+<tr>
+<td><code>tr(:,:,:,jppo4,...)</code></td>
+<td>
+<script type="math/tex"> \text{PO}_4^{3-} </script>
+</td>
+<td>Phosphate</td>
+</tr>
+<tr>
+<td><code>tr(:,:,:,jpfer,...)</code></td>
+<td>
+<script type="math/tex"> \text{Fe} </script>
+</td>
+<td>Dissolved iron</td>
+</tr>
+<tr>
+<td><code>qCN_phy</code></td>
+<td>
+<script type="math/tex"> Q_{\text{C:N}}^{\text{phy}} </script>
+</td>
+<td>Phytoplankton carbon-to-nitrogen ratio</td>
+</tr>
+<tr>
+<td><code>qCN_mac</code></td>
+<td>
+<script type="math/tex"> Q_{\text{C:N}}^{\text{mac}} </script>
+</td>
+<td>Macroalgae carbon-to-nitrogen ratio</td>
+</tr>
+<tr>
+<td><code>qCP_phy</code></td>
+<td>
+<script type="math/tex"> Q_{\text{C:P}}^{\text{phy}} </script>
+</td>
+<td>Phytoplankton carbon-to-phosphorus ratio</td>
+</tr>
+<tr>
+<td><code>qCP_mac</code></td>
+<td>
+<script type="math/tex"> Q_{\text{C:P}}^{\text{mac}} </script>
+</td>
+<td>Macroalgae carbon-to-phosphorus ratio</td>
+</tr>
+<tr>
+<td><code>qCFe_mac</code></td>
+<td>
+<script type="math/tex"> Q_{\text{C:Fe}}^{\text{mac}} </script>
+</td>
+<td>Macroalgae carbon-to-iron ratio</td>
+</tr>
+<tr>
+<td><code>denitr</code></td>
+<td>
+<script type="math/tex"> R_{\text{denitr}} </script>
+</td>
+<td>Remineralization via denitrification</td>
+</tr>
+<tr>
+<td><code>zolimic</code></td>
+<td>
+<script type="math/tex"> R_{\text{oxic}} </script>
+</td>
+<td>Oxic remineralization flux</td>
+</tr>
+<tr>
+<td><code>zammonic</code></td>
+<td>
+<script type="math/tex"> R_{\text{denit+anoxic}} </script>
+</td>
+<td>Suboxic + anoxic remineralization flux</td>
+</tr>
+<tr>
+<td><code>zrem3D</code></td>
+<td>
+<script type="math/tex"> R_{\text{remin}} </script>
+</td>
+<td>Total remineralization rate</td>
+</tr>
+<tr>
+<td><code>ztemp</code></td>
+<td>—</td>
+<td>Temporary total remin flux (oxic + denitr + anoxic)</td>
+</tr>
+<tr>
+<td><code>rdenit</code></td>
+<td>
+<script type="math/tex"> \text{Redox}_{\text{NO}_3} </script>
+</td>
+<td>Redox stoichiometric ratio for denitrification</td>
+</tr>
+<tr>
+<td><code>rno3</code></td>
+<td>
+<script type="math/tex"> \text{Redox}_{\text{NO}_3}^{\text{TA}} </script>
+</td>
+<td>Stoichiometric coefficient for nitrate effect on alkalinity</td>
+</tr>
+<tr>
+<td><code>o2ut</code></td>
+<td>
+<script type="math/tex"> r_{\text{O}_2} </script>
+</td>
+<td>Stoichiometric coefficient for oxygen use during remineralization</td>
+</tr>
+<tr>
+<td><code>nitrfac</code></td>
+<td>—</td>
+<td>Nitrate-based partitioning factor</td>
+</tr>
+<tr>
+<td><code>nitrfac2</code></td>
+<td>—</td>
+<td>Additional nitrate-based partitioning factor</td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../model/" class="btn btn-neutral float-left" title="Model"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../model/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/mathjax-config.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

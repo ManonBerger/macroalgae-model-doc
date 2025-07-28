@@ -6,8 +6,13 @@ nav:
   - Home: index.md
   - Model:
     - General Description: Model/model.md
+    - Initialisation : Model/Initialisation.md
     - Production: Model/Production.md
-    - Remineralisation : Model/Remineralisation.md
+    - Mortality & Errosion: Model/Mortality.md
+    - Degradation: Model/Degradation.md
+    - Sinking: Model/Sinking.md
+    - Remineralisation: Model/Remineralisation.md
+    - Sedimentation: Model/Sedimentation.md
 
 markdown_extensions:
   - extra

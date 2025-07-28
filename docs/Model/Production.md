@@ -1,5 +1,6 @@
 # Macroalgae Primary Production 
 
+This is a description of **p4zmacroprod.F90**.
 This module simulates the **net primary production of macroalgae**, distinguishing between two functional types:
 
 - **Temperate Brown Macroalgae**
@@ -9,7 +10,7 @@ Light, temperature, nutrient, and iron limitations are considered to compute the
 
 ## Model Structure
 
-For each 3D ocean grid cell where macroalgae can grow (`macrogebco > 0`), the following processes are computed:
+For each 3D ocean grid cell where there is a macroalgae initial seed (`macrogebco > 0`), the following processes are computed:
 
 ---
 
@@ -20,7 +21,7 @@ For each 3D ocean grid cell where macroalgae can grow (`macrogebco > 0`), the fo
 The temperature growth limitation is given by a Gaussian function, following Wu et al (2023):
 
 $$
-f_T = \exp\left(-2.3 \left(\frac{T - T_{\text{opt}}}{T_x - T_{\text{opt}}}\right)^2 \right)
+f_T = \exp\left(-2.4 \left(\frac{T - T_{\text{opt}}}{T_x - T_{\text{opt}}}\right)^2 \right)
 $$
 
 Where:
@@ -29,9 +30,11 @@ Where:
 - \( T_{\text{opt}} \): optimal temperature
 - \( T_x \): limiting temperature (either `xtmax` or `xtmin`)
 
+
+
 ### 2. Light Limitation
 
-Light limitation uses a peaked function:
+Light limitation uses a peaked function following Wu et al (2023):
 
 $$
 f_{\text{PAR}} = \left( \frac{E}{E_{\text{opt}}} \right) \cdot \exp\left(1 - \frac{E}{E_{\text{opt}}} \right)
@@ -41,9 +44,9 @@ Where:
 - \( E \): total PAR at depth
 - \( E_{\text{opt}} \): optimal light for macroalgae
 
-### 3. Nutrient Limitation (Michaelis-Menten)
+### 3. Macro nutrient Limitation (Michaelis-Menten)
 
-Nitrogen (NO₃) and phosphorus (PO₄) limitations are computed:
+Nitrogen (NO₃) and phosphorus (PO₄) limitations are computed with a Michaelis-Menten function:
 
 $$
 L_{NO_3} = \frac{[NO_3]}{K_{NO_3} + [NO_3]} \quad ; \quad L_{PO_4} = \frac{[PO_4]}{K_{PO_4} + [PO_4]}
@@ -57,7 +60,7 @@ $$
 
 ### 4. Iron Limitation
 
-Based on Paine et al. (2023):
+Iron limitation is computed with a Michaelis-Menten function, based on Paine et al. (2023):
 
 $$
 f_{Fe} = f_{Fe}^{\text{max}} \cdot \frac{[Fe]}{K_{Fe} + [Fe]}
@@ -76,13 +79,13 @@ $$
 Gross primary production:
 
 $$
-\frac{dB}{dt} = \mu_{\text{max}} \cdot f_T \cdot f_{\text{nut}} \cdot f_{\text{PAR}} \cdot \Delta t
+P = \mu_{\text{max}} \cdot f_T \cdot f_{\text{nut}} \cdot f_{\text{PAR}} \cdot \Delta t
 $$
 
 Then corrected for **sea ice cover**:
 
 $$
-\frac{dB}{dt} = \frac{dB}{dt} \cdot (1 - \text{frac}_{\text{ice}})
+P = P \cdot (1 - \text{frac}_{\text{ice}})
 $$
 
 ---
@@ -92,7 +95,7 @@ $$
 Respiration is temperature-dependent:
 
 $$
-R = \mu_{\text{resp}} \cdot \text{coef}_{\text{resp}}^{T - 20} \cdot \frac{dB}{dt}
+R = \mu_{\text{resp}} \cdot \text{coef}_{\text{resp}}^{T - 20} \cdot P
 $$
 
 ---
@@ -102,7 +105,11 @@ $$
 Finally, NPP is computed as:
 
 $$
-\text{NPP} = (\frac{dB}{dt} - R) \cdot \text{biomass tracer mask}
+NPP = (P - R) \cdot \text{B}
+$$
+
+$$
+\frac{dB}{dt} = \text{NPP} 
 $$
 
 ---
@@ -111,6 +118,25 @@ $$
 
 The uptake of nutrients (PO₄, NO₃, DIC, Fe) is proportional to the NPP and stoichiometric ratios.
 
+$$
+\frac{dDIC}{dt} = - NPP \cdot mask_{3D}
+$$
+
+$$
+\frac{dNO_3^{-}}{dt} = - NPP \cdot mask_{3D} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}} 
+$$
+
+$$
+\frac{dPO_4^{3-}}{dt} = - NPP \cdot mask_{3D} \cdot \frac{Q_{C:P}^{PHY}}{Q_{C:P}^{MAC}}
+$$
+
+$$
+\frac{dDFe}{dt} = - NPP \cdot mask_{3D} \cdot \frac{1}{Q_{C:Fe}^{MAC}}
+$$
+
+$$
+\frac{dTA}{dt} = + r_{NO_3} \cdot NPP \cdot mask_{3D} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}} 
+$$
 ---
 
 ## Variable Mapping

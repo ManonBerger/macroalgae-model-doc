@@ -31,16 +31,16 @@ $$
 
 ---
 
-## 4. DOC and DOC\_mac Evolution
+## 4. DOC and DOC<sub>MAC</sub> Evolution
 
-Remineralization is split between the phytoplankton-derived DOC and macroalgal DOC pools using \( f_{DOCmac} \)  :
-
-$$
-\frac{dDOC}{dt} = -R_{tot} \cdot (1 - f_{DOCmac})
-$$
+Remineralization is split between the phytoplankton-derived DOC and macroalgal DOC pools using \( f_{DOCMAC} \)  :
 
 $$
-\frac{dDOC_{mac}}{dt} = -R_{tot} \cdot f_{DOCmac}
+\frac{dDOC}{dt} = -R_{tot} \cdot (1 - f_{DOCMAC})
+$$
+
+$$
+\frac{dDOC_{mac}}{dt} = -R_{tot} \cdot f_{DOCMAC}
 $$
 
 ---
@@ -68,11 +68,11 @@ $$
 Stoichiometry accounts for distinct C:N ratios of phytoplankton and macroalgae:
 
 $$
-\frac{dNO_3^-}{dt} = - R_{denit} \cdot r_{denit} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
+\frac{dNO_3^-}{dt} = - R_{denit} \cdot r_{denit} \cdot \left[(1 - f_{DOCMAC}) + f_{DOCMAC} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
 $$
 
 $$
-\frac{dNH_4^+}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
+\frac{dNH_4^+}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCMAC}) + f_{DOCMAC} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
 $$
 
 ### Total Alkalinity (TAl)
@@ -80,7 +80,7 @@ $$
 Alkalinity changes reflect nitrate consumption and denitrification:
 
 $$
-\frac{dTA}{dt} = + r_{NO_3} \cdot \left( R_{tot} + r_{denit} \cdot R_{denit} \right) \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}} \right]
+\frac{dTA}{dt} = + r_{NO_3} \cdot \left( R_{tot} + r_{denit} \cdot R_{denit} \right) \cdot \left[(1 - f_{DOCMAC}) + f_{DOCMAC} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}} \right]
 $$
 
 ### Phosphate
@@ -88,7 +88,7 @@ $$
 Scaled similarly using C:P ratios:
 
 $$
-\frac{dPO_4^{3-}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:P}^{PHY}}{Q_{C:P}^{MAC}} \right]
+\frac{dPO_4^{3-}}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCMAC}) + f_{DOCMAC} \cdot \frac{Q_{C:P}^{PHY}}{Q_{C:P}^{MAC}} \right]
 $$
 
 ### Iron (from macroalgae only)
@@ -96,12 +96,12 @@ $$
 Iron is released as dissolved iron only from macroalgal DOC remineralization:
 
 $$
-\frac{dDFe}{dt} = + R_{tot} \cdot f_{DOCmac} \cdot \left( \frac{1}{Q_{C:Fe}^{MAC}} \right)
+\frac{dDFe}{dt} = + R_{tot} \cdot f_{DOCMAC} \cdot \left( \frac{1}{Q_{C:Fe}^{MAC}} \right)
 $$
 
 ---
 
-## Variables
+## Variable Mapping
 
 | Fortran Variable       | Documentation / Equation Name           | Description                                                           |
 |------------------------|-----------------------------------------|-----------------------------------------------------------------------|

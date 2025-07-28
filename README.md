@@ -3,7 +3,7 @@
 
 Welcome to the macroalgae module for the NEMO-PISCES ocean biogeochemical model! This module simulates the full life cycle of natural macroalgae and its impact on ocean carbon cycling, and nutrient dynamics.
 
-See https://manonberger.github.io/macroalgae-model-doc/
+See https://ManonBerger.github.io/macroalgae-model-doc/
 
 # 🧑‍🔬 Citation
 

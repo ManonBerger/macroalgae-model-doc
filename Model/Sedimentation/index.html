@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Sedimentation - Macroalgae PISCES Module</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Sedimentation";
+        var mkdocs_page_input_path = "Model/Sedimentation.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Macroalgae PISCES Module
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Model</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../model/">General Description</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Initialisation/">Initialisation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Production/">Production</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Mortality/">Mortality & Errosion</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Degradation/">Degradation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Sinking/">Sinking</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Remineralisation/">Remineralisation</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Sedimentation</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#description">Description</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#equations">Equations</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#variable-summary">Variable Summary</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Macroalgae PISCES Module</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Model</li>
+      <li class="breadcrumb-item active">Sedimentation</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="sedimentation-routines-macroalgae-module">Sedimentation Routines – Macroalgae Module</h1>
+<p>This routine describes <strong>p4zsed.F90</strong> which handles the remineralization of particulate organic carbon from macroalgae (POCMAC) reaching the seafloor and its impacts on biogeochemical tracers such as nutrients, oxygen, carbon, and alkalinity.</p>
+<h2 id="description">Description</h2>
+<p>The routine computes the remineralization fluxes from POC using a combination of:</p>
+<ul>
+<li><strong>Denitrification (NO₃ to NH₄)</strong> under nitrate-rich, oxygen-depleted conditions.</li>
+<li><strong>Oxygen consumption</strong> when O₂ is available.</li>
+<li><strong>Release of dissolved organic carbon (DOC)</strong> and remineralized nutrients (PO₄³⁻, NH₄⁺).</li>
+<li><strong>Changes in total alkalinity (TAlk)</strong> and <strong>dissolved inorganic carbon (DIC)</strong>.</li>
+<li><strong>Iron remineralization</strong>, specifically from macroalgal origin.</li>
+</ul>
+<p>Burial is applied to macroalgae-derived POC via <code>zbureffmac</code>.</p>
+<hr />
+<h2 id="equations">Equations</h2>
+<ul>
+<li>
+<script type="math/tex">w_{\text{POC}} = \frac{F_{\text{POC}}}{h} </script>: local volumetric remineralization rate from sinking POC.</li>
+<li>
+<script type="math/tex">x_{\text{macro}} = \frac{F_{\text{POC,macro}}}{F_{\text{POC,tot}}}</script>: fraction of macroalgae POC.</li>
+<li>
+<script type="math/tex">R_{\text{stoich}}</script>: stoichiometric ratios applied to convert organic matter to remineralized nutrients.</li>
+</ul>
+<p>Then:</p>
+<ol>
+<li><strong>Total volumetric remineralization</strong>:</li>
+</ol>
+<p>
+<script type="math/tex; mode=display">
+   w_{\text{POC}} = \frac{F_{\text{POC,bio}} + F_{\text{POC,macro}}}{h}
+   </script>
+</p>
+<ol>
+<li><strong>Denitrification flux (NO₃ → NH₄)</strong>:</li>
+</ol>
+<p>
+<script type="math/tex; mode=display">
+   P_{\text{denit}} = \min\left(0.5 \cdot \frac{[\text{NO}_3] - r_{\text{trn}}}{r_{\text{denit}}}, z_{\text{denit}}^{2D} \cdot w_{\text{POC}} \cdot R_{\text{rivNO3}}\right)
+   </script>
+</p>
+<ol>
+<li><strong>Remaining remineralization not using NO₃</strong>:</li>
+</ol>
+<p>
+<script type="math/tex; mode=display">
+   R_{\text{O}_2,\text{limit}} = \min\left(\frac{[\text{O}_2] - r_{\text{trn}}}{r_{\text{O}_2}}, \left(w_{\text{POC}} \cdot R_{\text{rivNO3}} - P_{\text{denit}}\right) \cdot (1 - f_{\text{nitrif}})\right)
+   </script>
+</p>
+<ol>
+<li>
+<p><strong>Stoichiometric redistribution</strong>:</p>
+<ul>
+<li><strong>DIC</strong>:
+ <script type="math/tex; mode=display">
+ \Delta \text{DIC} = P_{\text{denit}} + R_{\text{O}_2,\text{limit}}
+ </script>
+</li>
+<li><strong>NH₄</strong>:
+ <script type="math/tex; mode=display">
+ \Delta \text{NH}_4 = \left(P_{\text{denit}} + R_{\text{O}_2,\text{limit}}\right) \cdot \left[(1 - x_{\text{macro}}) + x_{\text{macro}} \cdot \frac{q_{C:N}^{\text{phy}}}{q_{C:N}^{\text{mac}}}\right]
+ </script>
+</li>
+<li><strong>NO₃</strong>:
+ <script type="math/tex; mode=display">
+ \Delta \text{NO}_3 = - r_{\text{denit}} \cdot P_{\text{denit}} \cdot \left[(1 - x_{\text{macro}}) + x_{\text{macro}} \cdot \frac{q_{C:N}^{\text{phy}}}{q_{C:N}^{\text{mac}}}\right]
+ </script>
+</li>
+<li><strong>PO₄</strong>:
+ <script type="math/tex; mode=display">
+ \Delta \text{PO}_4 = \left(P_{\text{denit}} + R_{\text{O}_2,\text{limit}}\right) \cdot \left[(1 - x_{\text{macro}}) + x_{\text{macro}} \cdot \frac{q_{C:P}^{\text{phy}}}{q_{C:P}^{\text{mac}}}\right]
+ </script>
+</li>
+<li><strong>Fe</strong>:
+ <script type="math/tex; mode=display">
+ \Delta \text{Fe} = \left(P_{\text{denit}} + R_{\text{O}_2,\text{limit}}\right) \cdot x_{\text{macro}} \cdot \frac{1}{q_{C:Fe}^{\text{mac}}}
+ </script>
+</li>
+</ul>
+</li>
+</ol>
+<p>Where macroalgae stoichiometry is mixed based on <script type="math/tex">x_{\text{macro}}</script>, using:</p>
+<ul>
+<li>
+<script type="math/tex">q_{C:N}^{\text{phy}}</script>, <script type="math/tex">q_{C:P}^{\text{phy}}</script> for phytoplankton</li>
+<li>
+<script type="math/tex">q_{C:N}^{\text{mac}}</script>, <script type="math/tex">q_{C:P}^{\text{mac}}</script>, <script type="math/tex">q_{C:Fe}^{\text{mac}}</script> for macroalgae.</li>
+</ul>
+<hr />
+<h2 id="variable-summary">Variable Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sinkpocb</code></td>
+<td>Sinking flux of background POC</td>
+<td>mmol C m⁻² d⁻¹</td>
+</tr>
+<tr>
+<td><code>sinkpocmac</code></td>
+<td>Sinking flux of macroalgae-derived POC</td>
+<td>mmol C m⁻² d⁻¹</td>
+</tr>
+<tr>
+<td><code>tr(:,:,jpno3)</code></td>
+<td>Nitrate concentration</td>
+<td>mmol N m⁻³</td>
+</tr>
+<tr>
+<td><code>tr(:,:,jpoxy)</code></td>
+<td>Oxygen concentration</td>
+<td>mmol O₂ m⁻³</td>
+</tr>
+<tr>
+<td><code>tr(:,:,jpdoc)</code></td>
+<td>DOC concentration</td>
+<td>mmol C m⁻³</td>
+</tr>
+<tr>
+<td><code>tr(:,:,jpnh4)</code></td>
+<td>Ammonium concentration</td>
+<td>mmol N m⁻³</td>
+</tr>
+<tr>
+<td><code>tr(:,:,jppo4)</code></td>
+<td>Phosphate concentration</td>
+<td>mmol P m⁻³</td>
+</tr>
+<tr>
+<td><code>tr(:,:,jpdic)</code></td>
+<td>Dissolved inorganic carbon concentration</td>
+<td>mmol C m⁻³</td>
+</tr>
+<tr>
+<td><code>tr(:,:,jptal)</code></td>
+<td>Total alkalinity</td>
+<td>µmol eq m⁻³</td>
+</tr>
+<tr>
+<td><code>tr(:,:,jpfer)</code></td>
+<td>Iron concentration</td>
+<td>µmol Fe m⁻³</td>
+</tr>
+<tr>
+<td><code>qCN_phy</code>, <code>qCP_phy</code></td>
+<td>C\:N and C\:P ratios for phytoplankton</td>
+<td>mol\:mol</td>
+</tr>
+<tr>
+<td><code>qCN_mac</code>, <code>qCP_mac</code></td>
+<td>C\:N and C\:P ratios for macroalgae</td>
+<td>mol\:mol</td>
+</tr>
+<tr>
+<td><code>qCFe_mac</code></td>
+<td>C\:Fe ratio for macroalgae</td>
+<td>mol\:mol</td>
+</tr>
+<tr>
+<td><code>zbureffmac</code></td>
+<td>Macroalgae burial efficiency</td>
+<td>dimensionless</td>
+</tr>
+</tbody>
+</table>
+<hr />
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Remineralisation/" class="btn btn-neutral float-left" title="Remineralisation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Remineralisation/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../js/mathjax-config.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

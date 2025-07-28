@@ -47,7 +47,15 @@
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="../model/">General Description</a>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Initialisation/">Initialisation</a>
+                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../Production/">Production</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Mortality/">Mortality & Errosion</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Degradation/">Degradation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Sinking/">Sinking</a>
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Remineralisation</a>
     <ul class="current">
@@ -57,7 +65,7 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#3-total-remineralization-flux">3. Total Remineralization Flux</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#4-doc-and-doc_mac-evolution">4. DOC and DOC_mac Evolution</a>
+    <li class="toctree-l2"><a class="reference internal" href="#4-doc-and-docmac-evolution">4. DOC and DOCMAC Evolution</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#5-remineralization-products">5. Remineralization Products</a>
         <ul>
@@ -75,9 +83,11 @@
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#variables">Variables</a>
+    <li class="toctree-l2"><a class="reference internal" href="#variable-mapping">Variable Mapping</a>
     </li>
     </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Sedimentation/">Sedimentation</a>
                   </li>
               </ul>
       </div>
@@ -126,16 +136,16 @@ R_{tot} =R_{oxic} + R_{denit} + R _{ano}
 </script>
 </p>
 <hr />
-<h2 id="4-doc-and-doc_mac-evolution">4. DOC and DOC_mac Evolution</h2>
-<p>Remineralization is split between the phytoplankton-derived DOC and macroalgal DOC pools using <script type="math/tex"> f_{DOCmac} </script>  :</p>
+<h2 id="4-doc-and-docmac-evolution">4. DOC and DOC<sub>MAC</sub> Evolution</h2>
+<p>Remineralization is split between the phytoplankton-derived DOC and macroalgal DOC pools using <script type="math/tex"> f_{DOCMAC} </script>  :</p>
 <p>
 <script type="math/tex; mode=display">
-\frac{dDOC}{dt} = -R_{tot} \cdot (1 - f_{DOCmac})
+\frac{dDOC}{dt} = -R_{tot} \cdot (1 - f_{DOCMAC})
 </script>
 </p>
 <p>
 <script type="math/tex; mode=display">
-\frac{dDOC_{mac}}{dt} = -R_{tot} \cdot f_{DOCmac}
+\frac{dDOC_{mac}}{dt} = -R_{tot} \cdot f_{DOCMAC}
 </script>
 </p>
 <hr />
@@ -158,37 +168,37 @@ R_{tot} =R_{oxic} + R_{denit} + R _{ano}
 <p>Stoichiometry accounts for distinct C:N ratios of phytoplankton and macroalgae:</p>
 <p>
 <script type="math/tex; mode=display">
-\frac{dNO_3^-}{dt} = - R_{denit} \cdot r_{denit} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
+\frac{dNO_3^-}{dt} = - R_{denit} \cdot r_{denit} \cdot \left[(1 - f_{DOCMAC}) + f_{DOCMAC} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
 </script>
 </p>
 <p>
 <script type="math/tex; mode=display">
-\frac{dNH_4^+}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
+\frac{dNH_4^+}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCMAC}) + f_{DOCMAC} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}}\right]
 </script>
 </p>
 <h3 id="total-alkalinity-tal">Total Alkalinity (TAl)</h3>
 <p>Alkalinity changes reflect nitrate consumption and denitrification:</p>
 <p>
 <script type="math/tex; mode=display">
-\frac{dTA}{dt} = + r_{NO_3} \cdot \left( R_{tot} + r_{denit} \cdot R_{denit} \right) \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}} \right]
+\frac{dTA}{dt} = + r_{NO_3} \cdot \left( R_{tot} + r_{denit} \cdot R_{denit} \right) \cdot \left[(1 - f_{DOCMAC}) + f_{DOCMAC} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}} \right]
 </script>
 </p>
 <h3 id="phosphate">Phosphate</h3>
 <p>Scaled similarly using C:P ratios:</p>
 <p>
 <script type="math/tex; mode=display">
-\frac{dPO_4^{3-}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCmac}) + f_{DOCmac} \cdot \frac{Q_{C:P}^{PHY}}{Q_{C:P}^{MAC}} \right]
+\frac{dPO_4^{3-}}{dt} = + R_{tot} \cdot \left[(1 - f_{DOCMAC}) + f_{DOCMAC} \cdot \frac{Q_{C:P}^{PHY}}{Q_{C:P}^{MAC}} \right]
 </script>
 </p>
 <h3 id="iron-from-macroalgae-only">Iron (from macroalgae only)</h3>
 <p>Iron is released as dissolved iron only from macroalgal DOC remineralization:</p>
 <p>
 <script type="math/tex; mode=display">
-\frac{dDFe}{dt} = + R_{tot} \cdot f_{DOCmac} \cdot \left( \frac{1}{Q_{C:Fe}^{MAC}} \right)
+\frac{dDFe}{dt} = + R_{tot} \cdot f_{DOCMAC} \cdot \left( \frac{1}{Q_{C:Fe}^{MAC}} \right)
 </script>
 </p>
 <hr />
-<h2 id="variables">Variables</h2>
+<h2 id="variable-mapping">Variable Mapping</h2>
 <table>
 <thead>
 <tr>
@@ -309,7 +319,8 @@ R_{tot} =R_{oxic} + R_{denit} + R _{ano}
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../Production/" class="btn btn-neutral float-left" title="Production"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Sinking/" class="btn btn-neutral float-left" title="Sinking"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Sedimentation/" class="btn btn-neutral float-right" title="Sedimentation">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -332,8 +343,10 @@ R_{tot} =R_{oxic} + R_{denit} + R _{ano}
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../Production/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../Sinking/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
+    
+      <span><a href="../Sedimentation/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

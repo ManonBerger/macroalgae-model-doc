@@ -47,6 +47,8 @@
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="../model/">General Description</a>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Initialisation/">Initialisation</a>
+                  </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Production</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#model-structure">Model Structure</a>
@@ -57,7 +59,7 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#2-light-limitation">2. Light Limitation</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#3-nutrient-limitation-michaelis-menten">3. Nutrient Limitation (Michaelis-Menten)</a>
+    <li class="toctree-l3"><a class="reference internal" href="#3-macro-nutrient-limitation-michaelis-menten">3. Macro nutrient Limitation (Michaelis-Menten)</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#4-iron-limitation">4. Iron Limitation</a>
     </li>
@@ -81,7 +83,15 @@
     </li>
     </ul>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Mortality/">Mortality & Errosion</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Degradation/">Degradation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Sinking/">Sinking</a>
+                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../Remineralisation/">Remineralisation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Sedimentation/">Sedimentation</a>
                   </li>
               </ul>
       </div>
@@ -109,21 +119,22 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="macroalgae-primary-production">Macroalgae Primary Production</h1>
-<p>This module simulates the <strong>net primary production of macroalgae</strong>, distinguishing between two functional types:</p>
+<p>This is a description of <strong>p4zmacroprod.F90</strong>.
+This module simulates the <strong>net primary production of macroalgae</strong>, distinguishing between two functional types:</p>
 <ul>
 <li><strong>Temperate Brown Macroalgae</strong></li>
 <li><strong>Tropical Red Macroalgae</strong></li>
 </ul>
 <p>Light, temperature, nutrient, and iron limitations are considered to compute the <strong>net primary production (NPP)</strong>.</p>
 <h2 id="model-structure">Model Structure</h2>
-<p>For each 3D ocean grid cell where macroalgae can grow (<code>macrogebco &gt; 0</code>), the following processes are computed:</p>
+<p>For each 3D ocean grid cell where there is a macroalgae initial seed (<code>macrogebco &gt; 0</code>), the following processes are computed:</p>
 <hr />
 <h2 id="growth-limitations">Growth Limitations</h2>
 <h3 id="1-temperature-dependence">1. Temperature Dependence</h3>
 <p>The temperature growth limitation is given by a Gaussian function, following Wu et al (2023):</p>
 <p>
 <script type="math/tex; mode=display">
-f_T = \exp\left(-2.3 \left(\frac{T - T_{\text{opt}}}{T_x - T_{\text{opt}}}\right)^2 \right)
+f_T = \exp\left(-2.4 \left(\frac{T - T_{\text{opt}}}{T_x - T_{\text{opt}}}\right)^2 \right)
 </script>
 </p>
 <p>Where:</p>
@@ -136,7 +147,7 @@ f_T = \exp\left(-2.3 \left(\frac{T - T_{\text{opt}}}{T_x - T_{\text{opt}}}\right
 <script type="math/tex"> T_x </script>: limiting temperature (either <code>xtmax</code> or <code>xtmin</code>)</li>
 </ul>
 <h3 id="2-light-limitation">2. Light Limitation</h3>
-<p>Light limitation uses a peaked function:</p>
+<p>Light limitation uses a peaked function following Wu et al (2023):</p>
 <p>
 <script type="math/tex; mode=display">
 f_{\text{PAR}} = \left( \frac{E}{E_{\text{opt}}} \right) \cdot \exp\left(1 - \frac{E}{E_{\text{opt}}} \right)
@@ -145,8 +156,8 @@ f_{\text{PAR}} = \left( \frac{E}{E_{\text{opt}}} \right) \cdot \exp\left(1 - \fr
 <p>Where:
 - <script type="math/tex"> E </script>: total PAR at depth
 - <script type="math/tex"> E_{\text{opt}} </script>: optimal light for macroalgae</p>
-<h3 id="3-nutrient-limitation-michaelis-menten">3. Nutrient Limitation (Michaelis-Menten)</h3>
-<p>Nitrogen (NO₃) and phosphorus (PO₄) limitations are computed:</p>
+<h3 id="3-macro-nutrient-limitation-michaelis-menten">3. Macro nutrient Limitation (Michaelis-Menten)</h3>
+<p>Nitrogen (NO₃) and phosphorus (PO₄) limitations are computed with a Michaelis-Menten function:</p>
 <p>
 <script type="math/tex; mode=display">
 L_{NO_3} = \frac{[NO_3]}{K_{NO_3} + [NO_3]} \quad ; \quad L_{PO_4} = \frac{[PO_4]}{K_{PO_4} + [PO_4]}
@@ -159,7 +170,7 @@ f_{\text{nutrient}} = \min(L_{NO_3}, L_{PO_4})
 </script>
 </p>
 <h3 id="4-iron-limitation">4. Iron Limitation</h3>
-<p>Based on Paine et al. (2023):</p>
+<p>Iron limitation is computed with a Michaelis-Menten function, based on Paine et al. (2023):</p>
 <p>
 <script type="math/tex; mode=display">
 f_{Fe} = f_{Fe}^{\text{max}} \cdot \frac{[Fe]}{K_{Fe} + [Fe]}
@@ -176,13 +187,13 @@ f_{\text{nut}} = \min(f_{\text{nutrient}}, f_{Fe})
 <p>Gross primary production:</p>
 <p>
 <script type="math/tex; mode=display">
-\frac{dB}{dt} = \mu_{\text{max}} \cdot f_T \cdot f_{\text{nut}} \cdot f_{\text{PAR}} \cdot \Delta t
+P = \mu_{\text{max}} \cdot f_T \cdot f_{\text{nut}} \cdot f_{\text{PAR}} \cdot \Delta t
 </script>
 </p>
 <p>Then corrected for <strong>sea ice cover</strong>:</p>
 <p>
 <script type="math/tex; mode=display">
-\frac{dB}{dt} = \frac{dB}{dt} \cdot (1 - \text{frac}_{\text{ice}})
+P = P \cdot (1 - \text{frac}_{\text{ice}})
 </script>
 </p>
 <hr />
@@ -190,7 +201,7 @@ f_{\text{nut}} = \min(f_{\text{nutrient}}, f_{Fe})
 <p>Respiration is temperature-dependent:</p>
 <p>
 <script type="math/tex; mode=display">
-R = \mu_{\text{resp}} \cdot \text{coef}_{\text{resp}}^{T - 20} \cdot \frac{dB}{dt}
+R = \mu_{\text{resp}} \cdot \text{coef}_{\text{resp}}^{T - 20} \cdot P
 </script>
 </p>
 <hr />
@@ -198,12 +209,42 @@ R = \mu_{\text{resp}} \cdot \text{coef}_{\text{resp}}^{T - 20} \cdot \frac{dB}{d
 <p>Finally, NPP is computed as:</p>
 <p>
 <script type="math/tex; mode=display">
-\text{NPP} = (\frac{dB}{dt} - R) \cdot \text{biomass tracer mask}
+NPP = (P - R) \cdot \text{B}
+</script>
+</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{dB}{dt} = \text{NPP} 
 </script>
 </p>
 <hr />
 <h2 id="nutrient-update">Nutrient Update</h2>
 <p>The uptake of nutrients (PO₄, NO₃, DIC, Fe) is proportional to the NPP and stoichiometric ratios.</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{dDIC}{dt} = - NPP \cdot mask_{3D}
+</script>
+</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{dNO_3^{-}}{dt} = - NPP \cdot mask_{3D} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}} 
+</script>
+</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{dPO_4^{3-}}{dt} = - NPP \cdot mask_{3D} \cdot \frac{Q_{C:P}^{PHY}}{Q_{C:P}^{MAC}}
+</script>
+</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{dDFe}{dt} = - NPP \cdot mask_{3D} \cdot \frac{1}{Q_{C:Fe}^{MAC}}
+</script>
+</p>
+<p>
+<script type="math/tex; mode=display">
+\frac{dTA}{dt} = + r_{NO_3} \cdot NPP \cdot mask_{3D} \cdot \frac{Q_{C:N}^{PHY}}{Q_{C:N}^{MAC}} 
+</script>
+</p>
 <hr />
 <h2 id="variable-mapping">Variable Mapping</h2>
 <table>
@@ -410,8 +451,8 @@ R = \mu_{\text{resp}} \cdot \text{coef}_{\text{resp}}^{T - 20} \cdot \frac{dB}{d
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../model/" class="btn btn-neutral float-left" title="General Description"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../Remineralisation/" class="btn btn-neutral float-right" title="Remineralisation">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../Initialisation/" class="btn btn-neutral float-left" title="Initialisation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Mortality/" class="btn btn-neutral float-right" title="Mortality & Errosion">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -434,10 +475,10 @@ R = \mu_{\text{resp}} \cdot \text{coef}_{\text{resp}}^{T - 20} \cdot \frac{dB}{d
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../model/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../Initialisation/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../Remineralisation/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../Mortality/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

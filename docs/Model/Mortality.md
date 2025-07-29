@@ -78,7 +78,7 @@ Where $Mort_{\text{tot}}$ is the total biomass loss due to erosion and mortality
 | `trbtropred`              | Red macroalgae tracer (for mortality calculation)     | \( T_r \)       |
 | `nppmacb`                 | Net primary production of brown macroalgae            | \( NPP_b \)     |
 | `nppmacr`                 | Net primary production of red macroalgae              | \( NPP_r \)     |
-| `macrogebco`              | Geographic presence mask for macroalgae               | \( G \)         |
+| `macrogebco`              | Geographic presence mask for macroalgae               | \( mask3D \)         |
 | `ts(:,:,jp_tem,:)`        | Temperature field                                     | —              |
 | `was_hot_today`           | Daily Boolean flag for high temperature               | —              |
 | `cumhighdaysb`            | Cumulative number of hot days                         | —              |

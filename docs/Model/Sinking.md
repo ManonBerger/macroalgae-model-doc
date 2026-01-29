@@ -32,12 +32,13 @@ ENDIF
 Several calls to `trc_sink` are used, each for a different particle class:
 
 ```fortran
-CALL trc_sink( kt, Kbb, Kmm, wsmacs1, zsinkingmacs1 , jpdetmac, rfact2, 2 , 0.1 ) ! small POCMAC, class 1
-CALL trc_sink( kt, Kbb, Kmm, wsmacs2, zsinkingmacs2 , jpdetmac, rfact2, 2 , 0.1 )
-CALL trc_sink( kt, Kbb, Kmm, wsmacb1, zsinkingmacb1 , jpdetmac, rfact2, 2 , 0.3 ) ! large POCMAC, class 1
-CALL trc_sink( kt, Kbb, Kmm, wsmacb2, zsinkingmacb2 , jpdetmac, rfact2, 2 , 0.5 ) 
+CALL trc_sink( kt, Kbb, Kmm, wsmacs1, zsinkingmacs1 , jpdetmac, rfact2, 2 , 0.1*r_exptodeep) ! small POCMAC, class 1
+CALL trc_sink( kt, Kbb, Kmm, wsmacs2, zsinkingmacs2 , jpdetmac, rfact2, 2 , 0.1*r_exptodeep)
+CALL trc_sink( kt, Kbb, Kmm, wsmacb1, zsinkingmacb1 , jpdetmac, rfact2, 2 , 0.3*r_exptodeep) ! large POCMAC, class 1
+CALL trc_sink( kt, Kbb, Kmm, wsmacb2, zsinkingmacb2 , jpdetmac, rfact2, 2 , 0.5*r_exptodeep) 
 ```
 
+A large part of POC settles directly on the floor next to seaweed, so only `r_exptodeep` (15%) is considered to be able to sink to the bottom of the grid cell (Filbee-Dexter et al. 2024).
 Each call distributes a portion of the tracer mass based on `distribws`. The total detritus is conserved: each portion sinks independently but all come from the same `tr(jpdetmac)` tracer.
 
 ---
@@ -72,3 +73,8 @@ Each call distributes a portion of the tracer mass based on `distribws`. The tot
 | **Variable in Fortran**     | **Description**                     | **Values**             |
 |-----------------------------|-------------------------------------|---------------------------------|
 | `nitermaxmac`      | Maximum number of iterations for macroalgae particle sinking                   | -          |
+
+`r_exptodeep` is currently hard coded in `p4zsinkmac.F90`.
+
+## Reference
+Filbee-Dexter, Karen, Albert Pessarrodona, Morten F. Pedersen, et al. ‘Carbon Export from Seaweed Forests to Deep Ocean Sinks’. Nature Geoscience 17, no. 6 (2024): 552–59. https://doi.org/10.1038/s41561-024-01449-7.
